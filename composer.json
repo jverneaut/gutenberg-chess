@@ -4,7 +4,7 @@
 	"license": "MIT",
 	"autoload": {
 		"psr-4": {
-			"Jverneaut\\GutenbergChess\\": "src/"
+			"GutenbergChess\\": "GutenbergChess/"
 		}
 	},
 	"authors": [
