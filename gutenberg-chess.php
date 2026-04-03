@@ -19,7 +19,4 @@ if (! defined('ABSPATH')) {
 }
 
 require_once(__DIR__ . '/vendor/autoload.php');
-
-use GutenbergChess\BlocksRegistrar;
-
-BlocksRegistrar::register(__DIR__ . '/build');
+require_once(__DIR__ . '/gutenberg-chess-class.php');
