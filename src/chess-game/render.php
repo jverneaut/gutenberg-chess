@@ -1,1 +1,1 @@
-<div <?= get_block_wrapper_attributes(); ?>>Gutenberg Chess</div>
+<div <?= get_block_wrapper_attributes(['class' => 'js-gc-chess-board']); ?>></div>
