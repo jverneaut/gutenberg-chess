@@ -5,13 +5,21 @@
 	"version": "0.1.0",
 	"title": "Chess Game",
 	"category": "games",
-	"icon": "smiley",
+	"icon": "games",
 	"description": "Chess Game",
 	"example": {},
 	"attributes": {
 		"moves": {
 			"type": "array",
 			"default": []
+		},
+		"whitePlayerId": {
+			"type": "number",
+			"default": 0
+		},
+		"blackPlayerId": {
+			"type": "number",
+			"default": 0
 		}
 	},
 	"providesContext": {

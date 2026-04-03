@@ -1,8 +1,84 @@
-import { useBlockProps, useInnerBlocksProps } from "@wordpress/block-editor";
+import {
+	InspectorControls,
+	useBlockProps,
+	useInnerBlocksProps,
+} from "@wordpress/block-editor";
+import { ComboboxControl, Flex, FlexBlock, FlexItem, PanelBody, Spinner } from "@wordpress/components";
+import { store as coreDataStore, useEntityRecords } from "@wordpress/core-data";
+import { useSelect } from "@wordpress/data";
+import { __ } from "@wordpress/i18n";
+import { useEffect } from "react";
 
 import ChessGameProvider from "../../contexts/ChessGameContext";
 
 const TEMPLATE = [["gutenberg-chess/chess-board"]];
+const PLAYER_QUERY = {
+	who: "authors",
+	per_page: 100,
+	_fields: "id,name,slug,avatar_urls",
+};
+const avatarStyle = {
+	width: "28px",
+	height: "28px",
+	borderRadius: "999px",
+	objectFit: "cover",
+	flexShrink: 0,
+};
+const fallbackAvatarStyle = {
+	...avatarStyle,
+	display: "flex",
+	alignItems: "center",
+	justifyContent: "center",
+	background: "#1d2327",
+	color: "#fff",
+	fontSize: "12px",
+	fontWeight: 600,
+};
+const optionSecondaryTextStyle = {
+	color: "inherit",
+	fontSize: "12px",
+	lineHeight: 1.3,
+	opacity: 0.75,
+};
+
+const getAvatarUrl = (user) =>
+	user?.avatar_urls?.["48"] ||
+	user?.avatar_urls?.[48] ||
+	user?.avatar_urls?.["24"] ||
+	user?.avatar_urls?.[24] ||
+	"";
+
+const renderAvatar = (user) => {
+	const avatarUrl = getAvatarUrl(user);
+
+	if (avatarUrl) {
+		return <img alt="" src={avatarUrl} style={avatarStyle} />;
+	}
+
+	return (
+		<div aria-hidden="true" style={fallbackAvatarStyle}>
+			{(user?.name || user?.slug || "?").slice(0, 1).toUpperCase()}
+		</div>
+	);
+};
+
+const renderUserOption = ({ item }) => {
+	if (!item.value) {
+		return <span>{item.label}</span>;
+	}
+
+	return (
+		<Flex>
+			<FlexItem>{renderAvatar(item)}</FlexItem>
+			<FlexBlock>
+				<div>{item.label}</div>
+				<div className="gc-chess-player-option-meta" style={optionSecondaryTextStyle}>
+					@{item.slug}
+				</div>
+			</FlexBlock>
+		</Flex>
+	);
+};
 
 const Edit = ({ attributes, setAttributes }) => {
 	const blockProps = useBlockProps();
@@ -10,15 +86,115 @@ const Edit = ({ attributes, setAttributes }) => {
 		template: TEMPLATE,
 		templateLock: "all",
 	});
+	const currentUser = useSelect(
+		(select) => select(coreDataStore).getCurrentUser(),
+		[],
+	);
+	const {
+		records: userRecords,
+		isResolving: isResolvingUsers,
+	} = useEntityRecords("root", "user", PLAYER_QUERY);
+	const users = Array.isArray(userRecords) ? userRecords : [];
+	const defaultWhitePlayerId =
+		!attributes.whitePlayerId &&
+		currentUser?.id &&
+		users.some(({ id }) => id === currentUser.id)
+			? currentUser.id
+			: 0;
+	const effectiveWhitePlayerId =
+		attributes.whitePlayerId || defaultWhitePlayerId;
+	const whitePlayerOptions = [
+		...users.map((user) => ({
+			value: String(user.id),
+			label: user.name || user.slug,
+			slug: user.slug,
+			avatar_urls: user.avatar_urls,
+			disabled:
+				user.id === attributes.blackPlayerId &&
+				user.id !== effectiveWhitePlayerId,
+		})),
+	];
+	const blackPlayerOptions = [
+		...users.map((user) => ({
+			value: String(user.id),
+			label: user.name || user.slug,
+			slug: user.slug,
+			avatar_urls: user.avatar_urls,
+			disabled:
+				user.id === effectiveWhitePlayerId &&
+				user.id !== attributes.blackPlayerId,
+		})),
+	];
+
+	useEffect(() => {
+		if (
+			attributes.whitePlayerId ||
+			!defaultWhitePlayerId
+		) {
+			return;
+		}
+
+		setAttributes({ whitePlayerId: defaultWhitePlayerId });
+	}, [attributes.whitePlayerId, defaultWhitePlayerId, setAttributes]);
 
 	return (
-		<ChessGameProvider
-			moves={attributes.moves}
-			onMovesChange={(moves) => setAttributes({ moves })}
-			allowDragging
-		>
-			<div {...innerBlocksProps} />
-		</ChessGameProvider>
+		<>
+			<InspectorControls>
+				<PanelBody
+					title={__("Players", "gutenberg-chess")}
+					initialOpen={true}
+				>
+					{isResolvingUsers ? (
+						<Spinner />
+					) : (
+						<>
+							<ComboboxControl
+								__next40pxDefaultSize
+								className="gc-chess-player-combobox"
+								label={__("White player", "gutenberg-chess")}
+								options={whitePlayerOptions}
+								value={
+									effectiveWhitePlayerId
+										? String(effectiveWhitePlayerId)
+										: ""
+								}
+								onChange={(value) =>
+									setAttributes({
+										whitePlayerId: value ? Number(value) : 0,
+									})
+								}
+								__experimentalRenderItem={renderUserOption}
+							/>
+							<div style={{ height: "12px" }} />
+							<ComboboxControl
+								__next40pxDefaultSize
+								className="gc-chess-player-combobox"
+								label={__("Black player", "gutenberg-chess")}
+								options={blackPlayerOptions}
+								value={
+									attributes.blackPlayerId
+										? String(attributes.blackPlayerId)
+										: ""
+								}
+								onChange={(value) =>
+									setAttributes({
+										blackPlayerId: value ? Number(value) : 0,
+									})
+								}
+								__experimentalRenderItem={renderUserOption}
+							/>
+						</>
+					)}
+				</PanelBody>
+			</InspectorControls>
+			<ChessGameProvider
+				moves={attributes.moves}
+				onMovesChange={(moves) => setAttributes({ moves })}
+				allowDragging
+			>
+				<div {...innerBlocksProps} />
+			</ChessGameProvider>
+		</>
 	);
 };
 

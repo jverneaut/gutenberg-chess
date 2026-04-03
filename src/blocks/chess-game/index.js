@@ -4,6 +4,7 @@ import { addFilter } from "@wordpress/hooks";
 
 import metadata from "./block.json";
 import Edit from "./edit";
+import "./editor.scss";
 
 registerBlockType(metadata, {
 	edit: Edit,
