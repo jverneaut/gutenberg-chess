@@ -1,5 +1,10 @@
 import { useBlockProps } from "@wordpress/block-editor";
+import { Chessboard } from "./react-chessboard-compat";
 
 export default () => {
-	return <div {...useBlockProps()}>Chess Game</div>;
+	return (
+		<div {...useBlockProps()}>
+			<Chessboard />
+		</div>
+	);
 };
