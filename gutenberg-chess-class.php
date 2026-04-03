@@ -9,4 +9,7 @@ BlocksRegistrar::registerBlockCategory([
     'icon' => 'games',
 ]);
 
-BlocksRegistrar::registerBlockTypes(__DIR__ . '/build');
+BlocksRegistrar::registerBlockTypes(
+    __DIR__ . '/build/blocks',
+    __DIR__ . '/build/blocks-manifest.php',
+);

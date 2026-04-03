@@ -1,0 +1,20 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "gutenberg-chess/chess-board",
+	"version": "0.1.0",
+	"title": "Chess Board",
+	"category": "games",
+	"icon": "grid-view",
+	"description": "Chess board renderer",
+	"ancestor": ["gutenberg-chess/chess-game"],
+	"usesContext": ["gutenberg-chess/moves"],
+	"supports": {
+		"html": false,
+		"inserter": false
+	},
+	"textdomain": "gutenberg-chess",
+	"editorScript": "file:./index.js",
+	"viewScript": "file:./view.js",
+	"render": "file:./render.php"
+}

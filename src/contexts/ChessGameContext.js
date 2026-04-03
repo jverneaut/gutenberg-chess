@@ -1,9 +1,9 @@
-import { useMemo, useRef } from "react";
+import { createContext, useContext, useMemo, useRef } from "react";
 
 import { Chess } from "chess.js";
-import { Chessboard } from "./react-chessboard-compat";
 
 const generateBoardId = () => `gc-chess-${globalThis.crypto.randomUUID()}`;
+const ChessGameContext = createContext(null);
 
 const buildGame = (moves = []) => {
 	const chess = new Chess();
@@ -27,10 +27,21 @@ const buildGame = (moves = []) => {
 	return chess;
 };
 
-const ChessGame = ({
+export const useChessGameContext = () => {
+	const context = useContext(ChessGameContext);
+
+	if (!context) {
+		throw new Error("ChessBoard must be rendered inside ChessGame");
+	}
+
+	return context;
+};
+
+const ChessGameProvider = ({
 	moves = [],
 	onMovesChange,
 	allowDragging = false,
+	children,
 }) => {
 	const boardIdRef = useRef(generateBoardId());
 	const boardId = boardIdRef.current;
@@ -68,16 +79,17 @@ const ChessGame = ({
 	};
 
 	return (
-		<Chessboard
-			options={{
-				id: boardId,
-				position,
+		<ChessGameContext.Provider
+			value={{
 				allowDragging,
-				showAnimations: false,
+				boardId,
 				onPieceDrop,
+				position,
 			}}
-		/>
+		>
+			{children}
+		</ChessGameContext.Provider>
 	);
 };
 
-export default ChessGame;
+export default ChessGameProvider;

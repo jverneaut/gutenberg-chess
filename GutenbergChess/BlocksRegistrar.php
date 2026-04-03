@@ -14,14 +14,17 @@ class BlocksRegistrar
                 return self::mergeBlockCategory($categories, self::translateBlockCategory($category));
             },
             10,
-            2
+            2,
         );
     }
 
-    public static function registerBlockTypes(string $root): void
+    public static function registerBlockTypes(string $path, string $manifest): void
     {
-        add_action('init', static function () use ($root): void {
-            wp_register_block_types_from_metadata_collection($root, $root . '/blocks-manifest.php');
+        add_action('init', static function () use ($path, $manifest): void {
+            wp_register_block_types_from_metadata_collection(
+                $path,
+                $manifest,
+            );
         });
     }
 

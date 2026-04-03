@@ -1,15 +1,16 @@
+import { InnerBlocks } from "@wordpress/block-editor";
 import { registerBlockType } from "@wordpress/blocks";
+import { addFilter } from "@wordpress/hooks";
 
 import metadata from "./block.json";
-import Edit from "./edit.js";
+import Edit from "./edit";
 
-registerBlockType(metadata.name, {
+registerBlockType(metadata, {
 	edit: Edit,
-	save: () => null,
+	save: () => <InnerBlocks.Content />,
 });
 
-// Decrease polling interval for faster move updates
-wp.hooks.addFilter(
+addFilter(
 	"sync.pollingManager.pollingIntervalWithCollaborators",
 	"gutenberg-chess/polling",
 	() => 200,
