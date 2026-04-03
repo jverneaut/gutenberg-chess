@@ -1,0 +1,21 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "gutenberg-chess/chess-moves",
+	"version": "0.1.0",
+	"title": "Chess Moves",
+	"category": "games",
+	"icon": "editor-ol",
+	"description": "Displays the game move list using a configurable row template.",
+	"ancestor": ["gutenberg-chess/chess-game"],
+	"usesContext": ["gutenberg-chess/moves"],
+	"supports": {
+		"html": false
+	},
+	"textdomain": "gutenberg-chess",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./style-index.css",
+	"viewScript": "file:./view.js",
+	"render": "file:./render.php",
+	"style": "file:./style-index.css"
+}

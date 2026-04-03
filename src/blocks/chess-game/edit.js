@@ -42,7 +42,7 @@ const TEMPLATE = [
 				{
 					width: "33.33%",
 				},
-				[],
+				[["gutenberg-chess/chess-moves"]],
 			],
 		],
 	],

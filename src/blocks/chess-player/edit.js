@@ -7,7 +7,7 @@ import {
 import { ToolbarButton, ToolbarGroup } from "@wordpress/components";
 import { useDispatch, useSelect } from "@wordpress/data";
 import { __ } from "@wordpress/i18n";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 const TEMPLATE = [
 	[
@@ -60,16 +60,17 @@ const Edit = ({ attributes, context, setAttributes }) => {
 	const innerBlocksProps = useInnerBlocksProps(blockProps, {
 		template: TEMPLATE,
 	});
-	const avatarBlocks = useSelect(
-		(select) => {
-			const rootBlock = select("core/block-editor").getBlock(clientId);
-
-			return getBlocksByName(rootBlock, "core/avatar").map((block) => ({
+	const rootBlock = useSelect(
+		(select) => select("core/block-editor").getBlock(clientId),
+		[clientId],
+	);
+	const avatarBlocks = useMemo(
+		() =>
+			getBlocksByName(rootBlock, "core/avatar").map((block) => ({
 				clientId: block.clientId,
 				userId: block.attributes.userId || 0,
-			}));
-		},
-		[clientId],
+			})),
+		[rootBlock],
 	);
 	const playerSide = attributes.playerSide || "white";
 	const playerId = getPlayerIdFromContext(playerSide, context);

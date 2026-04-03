@@ -1,0 +1,17 @@
+.wp-block-gutenberg-chess-chess-move-index {
+	color: #6b7280;
+	font-variant-numeric: tabular-nums;
+}
+
+.wp-block-gutenberg-chess-chess-move {
+	color: #111827;
+	background: transparent;
+	padding: 0 0.35rem;
+	margin: 0 -0.35rem;
+	display: block;
+}
+
+.wp-block-gutenberg-chess-chess-move.is-last-move {
+	background: #000000;
+	color: #ffffff;
+}

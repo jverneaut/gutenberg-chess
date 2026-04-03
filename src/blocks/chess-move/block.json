@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "gutenberg-chess/chess-move",
+	"version": "0.1.0",
+	"title": "Chess Move",
+	"category": "games",
+	"icon": "editor-ul",
+	"description": "Displays a white or black move value.",
+	"ancestor": ["gutenberg-chess/chess-moves-template"],
+	"attributes": {
+		"side": {
+			"type": "string",
+			"default": "white"
+		}
+	},
+	"usesContext": [
+		"gutenberg-chess/whiteMove",
+		"gutenberg-chess/blackMove",
+		"gutenberg-chess/hasWhiteMove",
+		"gutenberg-chess/hasBlackMove",
+		"gutenberg-chess/isLastMoveRow"
+	],
+	"supports": {
+		"html": false,
+		"reusable": false
+	},
+	"textdomain": "gutenberg-chess",
+	"editorScript": "file:./index.js"
+}

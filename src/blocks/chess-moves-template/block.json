@@ -1,0 +1,19 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "gutenberg-chess/chess-moves-template",
+	"version": "0.1.0",
+	"title": "Chess Moves Template",
+	"category": "games",
+	"icon": "table-row-after",
+	"description": "Template used to render each row in the chess move list.",
+	"parent": ["gutenberg-chess/chess-moves"],
+	"usesContext": ["gutenberg-chess/moves"],
+	"supports": {
+		"html": false,
+		"inserter": false,
+		"reusable": false
+	},
+	"textdomain": "gutenberg-chess",
+	"editorScript": "file:./index.js"
+}
