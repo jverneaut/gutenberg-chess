@@ -8,6 +8,12 @@
 	"icon": "smiley",
 	"description": "Chess Game",
 	"example": {},
+	"attributes": {
+		"moves": {
+			"type": "array",
+			"default": []
+		}
+	},
 	"supports": {
 		"html": false
 	},
