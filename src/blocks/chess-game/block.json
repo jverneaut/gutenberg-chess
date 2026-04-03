@@ -23,7 +23,9 @@
 		}
 	},
 	"providesContext": {
-		"gutenberg-chess/moves": "moves"
+		"gutenberg-chess/moves": "moves",
+		"gutenberg-chess/whitePlayerId": "whitePlayerId",
+		"gutenberg-chess/blackPlayerId": "blackPlayerId"
 	},
 	"supports": {
 		"html": false

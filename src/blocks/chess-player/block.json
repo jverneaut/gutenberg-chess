@@ -1,0 +1,34 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "gutenberg-chess/chess-player",
+	"version": "0.1.0",
+	"title": "Chess Player",
+	"category": "games",
+	"icon": "admin-users",
+	"description": "Provides white or black player context to nested blocks.",
+	"ancestor": ["gutenberg-chess/chess-game"],
+	"attributes": {
+		"playerSide": {
+			"type": "string",
+			"default": "white"
+		},
+		"playerId": {
+			"type": "number",
+			"default": 0
+		}
+	},
+	"usesContext": [
+		"gutenberg-chess/whitePlayerId",
+		"gutenberg-chess/blackPlayerId"
+	],
+	"providesContext": {
+		"gutenberg-chess/playerId": "playerId"
+	},
+	"supports": {
+		"html": false,
+		"reusable": false
+	},
+	"textdomain": "gutenberg-chess",
+	"editorScript": "file:./index.js"
+}

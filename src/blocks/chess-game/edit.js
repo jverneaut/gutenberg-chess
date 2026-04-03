@@ -11,7 +11,42 @@ import { useEffect } from "react";
 
 import ChessGameProvider from "../../contexts/ChessGameContext";
 
-const TEMPLATE = [["gutenberg-chess/chess-board"]];
+const TEMPLATE = [
+	[
+		"core/columns",
+		{},
+		[
+			[
+				"core/column",
+				{
+					width: "66.66%",
+				},
+				[
+					[
+						"gutenberg-chess/chess-player",
+						{
+							playerSide: "black",
+						},
+					],
+					["gutenberg-chess/chess-board"],
+					[
+						"gutenberg-chess/chess-player",
+						{
+							playerSide: "white",
+						},
+					],
+				],
+			],
+			[
+				"core/column",
+				{
+					width: "33.33%",
+				},
+				[],
+			],
+		],
+	],
+];
 const PLAYER_QUERY = {
 	who: "authors",
 	per_page: 100,
@@ -84,7 +119,6 @@ const Edit = ({ attributes, setAttributes }) => {
 	const blockProps = useBlockProps();
 	const innerBlocksProps = useInnerBlocksProps(blockProps, {
 		template: TEMPLATE,
-		templateLock: "all",
 	});
 	const currentUser = useSelect(
 		(select) => select(coreDataStore).getCurrentUser(),

@@ -1,0 +1,68 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "gutenberg-chess/chess-player-name",
+	"version": "0.1.0",
+	"title": "Chess Player Name",
+	"category": "games",
+	"icon": "admin-users",
+	"description": "Displays the selected chess player name.",
+	"ancestor": ["gutenberg-chess/chess-player"],
+	"attributes": {
+		"playerId": {
+			"type": "number",
+			"default": 0
+		},
+		"playerName": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"usesContext": ["gutenberg-chess/playerId"],
+	"supports": {
+		"anchor": true,
+		"html": false,
+		"spacing": {
+			"margin": true,
+			"padding": true
+		},
+		"color": {
+			"gradients": true,
+			"__experimentalDefaultControls": {
+				"background": true,
+				"text": true
+			}
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"textAlign": true,
+			"__experimentalFontFamily": true,
+			"__experimentalFontWeight": true,
+			"__experimentalFontStyle": true,
+			"__experimentalTextTransform": true,
+			"__experimentalTextDecoration": true,
+			"__experimentalLetterSpacing": true,
+			"__experimentalDefaultControls": {
+				"fontSize": true
+			}
+		},
+		"interactivity": {
+			"clientNavigation": true
+		},
+		"__experimentalBorder": {
+			"radius": true,
+			"color": true,
+			"width": true,
+			"style": true,
+			"__experimentalDefaultControls": {
+				"radius": true,
+				"color": true,
+				"width": true,
+				"style": true
+			}
+		}
+	},
+	"textdomain": "gutenberg-chess",
+	"editorScript": "file:./index.js"
+}
