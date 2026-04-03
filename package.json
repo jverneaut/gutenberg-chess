@@ -1,9 +1,9 @@
 {
 	"name": "gutenberg-chess",
 	"version": "0.1.0",
-	"description": "Example block scaffolded with Create Block tool.",
-	"author": "The WordPress Contributors",
-	"license": "GPL-2.0-or-later",
+	"description": "",
+	"author": "Julien Verneaut <jverneaut@gmail.com>",
+	"license": "MIT",
 	"main": "build/index.js",
 	"scripts": {
 		"build": "wp-scripts build --blocks-manifest",
@@ -17,7 +17,8 @@
 	"dependencies": {
 		"@wordpress/block-editor": "latest",
 		"@wordpress/blocks": "latest",
-		"@wordpress/i18n": "latest"
+		"@wordpress/i18n": "latest",
+		"prettier": "^3.8.1"
 	},
 	"devDependencies": {
 		"@wordpress/scripts": "^31.8.0"

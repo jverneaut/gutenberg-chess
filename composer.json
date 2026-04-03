@@ -1,0 +1,19 @@
+{
+	"name": "jverneaut/gutenberg-chess",
+	"type": "wordpress-plugin",
+	"license": "MIT",
+	"autoload": {
+		"psr-4": {
+			"Jverneaut\\GutenbergChess\\": "src/"
+		}
+	},
+	"authors": [
+		{
+			"name": "Julien Verneaut",
+			"email": "jverneaut@gmail.com"
+		}
+	],
+	"require-dev": {
+		"laravel/pint": "^1.29"
+	}
+}
