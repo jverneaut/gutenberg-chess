@@ -1,6 +1,7 @@
 {
 	"name": "jverneaut/gutenberg-chess",
 	"type": "wordpress-plugin",
+	"description": "Real-time collaborative chess blocks for WordPress.",
 	"license": "MIT",
 	"autoload": {
 		"psr-4": {
