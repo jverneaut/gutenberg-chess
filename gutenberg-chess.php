@@ -3,7 +3,7 @@
 /**
  * Plugin Name:       Gutenberg Chess
  * Description:       Real-time collaborative chess blocks for WordPress.
- * Version:           0.1.0
+ * Version:           0.1.1
  * Requires at least: 7.0
  * Requires PHP:      7.4
  * Author:            Julien Verneaut
