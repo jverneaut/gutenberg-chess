@@ -1,0 +1,51 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "gutenberg-chess/chess-player-status",
+	"version": "0.1.0",
+	"title": "Chess Player Status",
+	"category": "games",
+	"icon": "info-outline",
+	"description": "Displays a simple game status text.",
+	"ancestor": ["gutenberg-chess/chess-player"],
+	"attributes": {
+		"playerSide": {
+			"type": "string",
+			"default": "white"
+		},
+		"statusText": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"usesContext": ["gutenberg-chess/moves", "gutenberg-chess/playerSide"],
+	"supports": {
+		"html": false,
+		"spacing": {
+			"margin": true,
+			"padding": true
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"textAlign": true,
+			"__experimentalFontFamily": true,
+			"__experimentalFontWeight": true,
+			"__experimentalFontStyle": true,
+			"__experimentalTextTransform": true,
+			"__experimentalTextDecoration": true,
+			"__experimentalLetterSpacing": true,
+			"__experimentalDefaultControls": {
+				"fontSize": true
+			}
+		},
+		"color": {
+			"background": true,
+			"text": true
+		}
+	},
+	"textdomain": "gutenberg-chess",
+	"editorScript": "file:./index.js",
+	"viewScript": "file:./view.js",
+	"render": "file:./render.php"
+}

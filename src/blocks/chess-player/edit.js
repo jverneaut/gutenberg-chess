@@ -30,7 +30,50 @@ const TEMPLATE = [
 					size: 24,
 				},
 			],
-			["gutenberg-chess/chess-player-name"],
+			[
+				"gutenberg-chess/chess-player-name",
+				{
+					style: {
+						layout: {
+							selfStretch: "fill",
+							flexSize: null,
+						},
+					},
+				},
+			],
+			[
+				"gutenberg-chess/chess-player-status",
+				{
+					style: {
+						layout: {
+							selfStretch: "fit",
+							flexSize: null,
+						},
+						elements: {
+							link: {
+								color: {
+									text: "var:preset|color|base",
+								},
+							},
+						},
+						spacing: {
+							padding: {
+								right: "var:preset|spacing|20",
+								left: "var:preset|spacing|20",
+								top: "4px",
+								bottom: "4px",
+							},
+						},
+						typography: {
+							fontStyle: "normal",
+							fontWeight: "700",
+						},
+					},
+					backgroundColor: "contrast",
+					textColor: "base",
+					fontSize: "small",
+				},
+			],
 		],
 	],
 ];
@@ -56,6 +99,7 @@ const getBlocksByName = (block, blockName) => {
 const Edit = ({ attributes, context, setAttributes }) => {
 	const { clientId } = useBlockEditContext();
 	const { updateBlockAttributes } = useDispatch("core/block-editor");
+	const playerSide = attributes.playerSide || "white";
 	const blockProps = useBlockProps();
 	const innerBlocksProps = useInnerBlocksProps(blockProps, {
 		template: TEMPLATE,
@@ -72,7 +116,6 @@ const Edit = ({ attributes, context, setAttributes }) => {
 			})),
 		[rootBlock],
 	);
-	const playerSide = attributes.playerSide || "white";
 	const playerId = getPlayerIdFromContext(playerSide, context);
 
 	useEffect(() => {

@@ -13,26 +13,66 @@ import { buildMoveRows } from "../../components/move-rows";
 
 const TEMPLATE = [
 	[
-		"core/group",
+		"core/columns",
 		{
-			layout: {
-				type: "flex",
-				flexWrap: "nowrap",
+			style: {
+				spacing: {
+					padding: {
+						top: "2px",
+						bottom: "2px",
+						left: "0",
+						right: "0",
+					},
+					blockGap: {
+						top: "0",
+						left: "var:preset|spacing|20",
+					},
+					margin: {
+						top: "0",
+						bottom: "0",
+					},
+				},
 			},
 		},
 		[
-			["gutenberg-chess/chess-move-index"],
 			[
-				"gutenberg-chess/chess-move",
+				"core/column",
 				{
-					side: "white",
+					width: "20%",
+					style: {
+						spacing: {
+							padding: {
+								top: "0",
+								bottom: "0",
+							},
+						},
+					},
+					layout: {
+						type: "default",
+					},
 				},
+				[["gutenberg-chess/chess-move-index"]],
 			],
 			[
-				"gutenberg-chess/chess-move",
+				"core/column",
 				{
-					side: "black",
+					width: "40%",
 				},
+				[["gutenberg-chess/chess-move"]],
+			],
+			[
+				"core/column",
+				{
+					width: "40%",
+				},
+				[
+					[
+						"gutenberg-chess/chess-move",
+						{
+							side: "black",
+						},
+					],
+				],
 			],
 		],
 	],

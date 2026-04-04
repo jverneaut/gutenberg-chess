@@ -23,7 +23,8 @@
 		"gutenberg-chess/blackPlayerId"
 	],
 	"providesContext": {
-		"gutenberg-chess/playerId": "playerId"
+		"gutenberg-chess/playerId": "playerId",
+		"gutenberg-chess/playerSide": "playerSide"
 	},
 	"supports": {
 		"html": false,

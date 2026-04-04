@@ -42,7 +42,27 @@ const TEMPLATE = [
 				{
 					width: "33.33%",
 				},
-				[["gutenberg-chess/chess-moves"]],
+				[
+					[
+						"core/group",
+						{
+							style: {
+								spacing: {
+									padding: {
+										top: "var:preset|spacing|50",
+										bottom: "var:preset|spacing|50",
+									},
+									blockGap: "0",
+								},
+							},
+							fontSize: "medium",
+							layout: {
+								type: "constrained",
+							},
+						},
+						[["gutenberg-chess/chess-moves"]],
+					],
+				],
 			],
 		],
 	],

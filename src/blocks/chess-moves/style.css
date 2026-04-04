@@ -6,8 +6,8 @@
 .wp-block-gutenberg-chess-chess-move {
 	color: #111827;
 	background: transparent;
-	padding: 0 0.35rem;
-	margin: 0 -0.35rem;
+	padding-left: 0.35rem;
+	margin-left: -0.35rem;
 	display: block;
 }
 
