@@ -9,6 +9,11 @@ import { useDispatch, useSelect } from "@wordpress/data";
 import { __ } from "@wordpress/i18n";
 import { useEffect, useMemo } from "react";
 
+import {
+	getEffectivePlayerSide,
+	isBlackEditorPerspective,
+} from "../../components/editor-perspective";
+
 const TEMPLATE = [
 	[
 		"core/group",
@@ -99,7 +104,22 @@ const getBlocksByName = (block, blockName) => {
 const Edit = ({ attributes, context, setAttributes }) => {
 	const { clientId } = useBlockEditContext();
 	const { updateBlockAttributes } = useDispatch("core/block-editor");
+	const currentUserId = useSelect(
+		(select) => select("core").getCurrentUser?.()?.id || 0,
+		[],
+	);
+	const whitePlayerId = context["gutenberg-chess/whitePlayerId"] || 0;
+	const blackPlayerId = context["gutenberg-chess/blackPlayerId"] || 0;
+	const isBlackPerspective = isBlackEditorPerspective({
+		currentUserId,
+		whitePlayerId,
+		blackPlayerId,
+	});
 	const playerSide = attributes.playerSide || "white";
+	const effectivePlayerSide = getEffectivePlayerSide(
+		playerSide,
+		isBlackPerspective,
+	);
 	const blockProps = useBlockProps();
 	const innerBlocksProps = useInnerBlocksProps(blockProps, {
 		template: TEMPLATE,
@@ -116,7 +136,7 @@ const Edit = ({ attributes, context, setAttributes }) => {
 			})),
 		[rootBlock],
 	);
-	const playerId = getPlayerIdFromContext(playerSide, context);
+	const playerId = getPlayerIdFromContext(effectivePlayerSide, context);
 
 	useEffect(() => {
 		if (attributes.playerId === playerId) {

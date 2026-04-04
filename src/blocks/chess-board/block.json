@@ -8,7 +8,11 @@
 	"icon": "grid-view",
 	"description": "Chess board renderer",
 	"ancestor": ["gutenberg-chess/chess-game"],
-	"usesContext": ["gutenberg-chess/moves"],
+	"usesContext": [
+		"gutenberg-chess/moves",
+		"gutenberg-chess/whitePlayerId",
+		"gutenberg-chess/blackPlayerId"
+	],
 	"supports": {
 		"html": false,
 		"inserter": false

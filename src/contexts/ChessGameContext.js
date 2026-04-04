@@ -41,6 +41,7 @@ const ChessGameProvider = ({
 	moves = [],
 	onMovesChange,
 	allowDragging = false,
+	boardOrientation = "white",
 	children,
 }) => {
 	const boardIdRef = useRef(generateBoardId());
@@ -83,6 +84,7 @@ const ChessGameProvider = ({
 			value={{
 				allowDragging,
 				boardId,
+				boardOrientation: boardOrientation === "black" ? "black" : "white",
 				onPieceDrop,
 				position,
 			}}

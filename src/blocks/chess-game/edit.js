@@ -158,9 +158,6 @@ const Edit = ({ attributes, setAttributes }) => {
 			label: user.name || user.slug,
 			slug: user.slug,
 			avatar_urls: user.avatar_urls,
-			disabled:
-				user.id === attributes.blackPlayerId &&
-				user.id !== attributes.whitePlayerId,
 		})),
 	];
 	const blackPlayerOptions = [
@@ -169,9 +166,6 @@ const Edit = ({ attributes, setAttributes }) => {
 			label: user.name || user.slug,
 			slug: user.slug,
 			avatar_urls: user.avatar_urls,
-			disabled:
-				user.id === attributes.whitePlayerId &&
-				user.id !== attributes.blackPlayerId,
 		})),
 	];
 
@@ -199,7 +193,7 @@ const Edit = ({ attributes, setAttributes }) => {
 								onChange={(value) => {
 									const selectedUserId = getUserIdFromOptionValue(value, users);
 
-									if (!selectedUserId || selectedUserId === attributes.blackPlayerId) {
+									if (!selectedUserId) {
 										return;
 									}
 
@@ -223,7 +217,7 @@ const Edit = ({ attributes, setAttributes }) => {
 								onChange={(value) => {
 									const selectedUserId = getUserIdFromOptionValue(value, users);
 
-									if (!selectedUserId || selectedUserId === attributes.whitePlayerId) {
+									if (!selectedUserId) {
 										return;
 									}
 

@@ -18,7 +18,12 @@
 			"default": ""
 		}
 	},
-	"usesContext": ["gutenberg-chess/moves", "gutenberg-chess/playerSide"],
+	"usesContext": [
+		"gutenberg-chess/moves",
+		"gutenberg-chess/playerSide",
+		"gutenberg-chess/whitePlayerId",
+		"gutenberg-chess/blackPlayerId"
+	],
 	"supports": {
 		"html": false,
 		"spacing": {

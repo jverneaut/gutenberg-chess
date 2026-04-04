@@ -18,7 +18,7 @@ const mountChessBoards = () => {
 		} catch {}
 
 		createRoot(chessBoardContainer).render(
-			<ChessGameProvider moves={moves}>
+			<ChessGameProvider moves={moves} allowDragging={false}>
 				<ChessBoard />
 			</ChessGameProvider>,
 		);
