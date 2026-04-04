@@ -4,10 +4,8 @@ import {
 	useInnerBlocksProps,
 } from "@wordpress/block-editor";
 import { ComboboxControl, Flex, FlexBlock, FlexItem, PanelBody, Spinner } from "@wordpress/components";
-import { store as coreDataStore, useEntityRecords } from "@wordpress/core-data";
-import { useSelect } from "@wordpress/data";
+import { useEntityRecords } from "@wordpress/core-data";
 import { __ } from "@wordpress/i18n";
-import { useEffect } from "react";
 
 import ChessGameProvider from "../../contexts/ChessGameContext";
 
@@ -134,29 +132,26 @@ const renderUserOption = ({ item }) => {
 		</Flex>
 	);
 };
+const getUserIdFromOptionValue = (value, users) => {
+	if (!value) {
+		return null;
+	}
+
+	const user = users.find(({ id }) => String(id) === value);
+
+	return user?.id || null;
+};
 
 const Edit = ({ attributes, setAttributes }) => {
 	const blockProps = useBlockProps();
 	const innerBlocksProps = useInnerBlocksProps(blockProps, {
 		template: TEMPLATE,
 	});
-	const currentUser = useSelect(
-		(select) => select(coreDataStore).getCurrentUser(),
-		[],
-	);
 	const {
 		records: userRecords,
 		isResolving: isResolvingUsers,
 	} = useEntityRecords("root", "user", PLAYER_QUERY);
 	const users = Array.isArray(userRecords) ? userRecords : [];
-	const defaultWhitePlayerId =
-		!attributes.whitePlayerId &&
-		currentUser?.id &&
-		users.some(({ id }) => id === currentUser.id)
-			? currentUser.id
-			: 0;
-	const effectiveWhitePlayerId =
-		attributes.whitePlayerId || defaultWhitePlayerId;
 	const whitePlayerOptions = [
 		...users.map((user) => ({
 			value: String(user.id),
@@ -165,7 +160,7 @@ const Edit = ({ attributes, setAttributes }) => {
 			avatar_urls: user.avatar_urls,
 			disabled:
 				user.id === attributes.blackPlayerId &&
-				user.id !== effectiveWhitePlayerId,
+				user.id !== attributes.whitePlayerId,
 		})),
 	];
 	const blackPlayerOptions = [
@@ -175,21 +170,10 @@ const Edit = ({ attributes, setAttributes }) => {
 			slug: user.slug,
 			avatar_urls: user.avatar_urls,
 			disabled:
-				user.id === effectiveWhitePlayerId &&
+				user.id === attributes.whitePlayerId &&
 				user.id !== attributes.blackPlayerId,
 		})),
 	];
-
-	useEffect(() => {
-		if (
-			attributes.whitePlayerId ||
-			!defaultWhitePlayerId
-		) {
-			return;
-		}
-
-		setAttributes({ whitePlayerId: defaultWhitePlayerId });
-	}, [attributes.whitePlayerId, defaultWhitePlayerId, setAttributes]);
 
 	return (
 		<>
@@ -208,15 +192,21 @@ const Edit = ({ attributes, setAttributes }) => {
 								label={__("White player", "gutenberg-chess")}
 								options={whitePlayerOptions}
 								value={
-									effectiveWhitePlayerId
-										? String(effectiveWhitePlayerId)
+									attributes.whitePlayerId
+										? String(attributes.whitePlayerId)
 										: ""
 								}
-								onChange={(value) =>
+								onChange={(value) => {
+									const selectedUserId = getUserIdFromOptionValue(value, users);
+
+									if (!selectedUserId || selectedUserId === attributes.blackPlayerId) {
+										return;
+									}
+
 									setAttributes({
-										whitePlayerId: value ? Number(value) : 0,
-									})
-								}
+										whitePlayerId: selectedUserId,
+									});
+								}}
 								__experimentalRenderItem={renderUserOption}
 							/>
 							<div style={{ height: "12px" }} />
@@ -230,11 +220,17 @@ const Edit = ({ attributes, setAttributes }) => {
 										? String(attributes.blackPlayerId)
 										: ""
 								}
-								onChange={(value) =>
+								onChange={(value) => {
+									const selectedUserId = getUserIdFromOptionValue(value, users);
+
+									if (!selectedUserId || selectedUserId === attributes.whitePlayerId) {
+										return;
+									}
+
 									setAttributes({
-										blackPlayerId: value ? Number(value) : 0,
-									})
-								}
+										blackPlayerId: selectedUserId,
+									});
+								}}
 								__experimentalRenderItem={renderUserOption}
 							/>
 						</>
