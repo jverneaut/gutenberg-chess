@@ -27,6 +27,28 @@ const buildGame = (moves = []) => {
 	return chess;
 };
 
+const getLastMoveSquares = (moves = []) => {
+	const lastMove = Array.isArray(moves) ? moves[moves.length - 1] : null;
+
+	if (
+		!lastMove ||
+		typeof lastMove.from !== "string" ||
+		typeof lastMove.to !== "string"
+	) {
+		return null;
+	}
+
+	const from = lastMove.from.toLowerCase();
+	const to = lastMove.to.toLowerCase();
+	const isSquare = (value) => /^[a-z]+\d+$/.test(value);
+
+	if (!isSquare(from) || !isSquare(to)) {
+		return null;
+	}
+
+	return { from, to };
+};
+
 export const useChessGameContext = () => {
 	const context = useContext(ChessGameContext);
 
@@ -49,6 +71,7 @@ const ChessGameProvider = ({
 
 	const chessGame = useMemo(() => buildGame(moves), [moves]);
 	const position = chessGame.fen();
+	const lastMoveSquares = useMemo(() => getLastMoveSquares(moves), [moves]);
 
 	const onPieceDrop = ({ sourceSquare, targetSquare }) => {
 		if (!allowDragging || !onMovesChange || !targetSquare) {
@@ -85,6 +108,7 @@ const ChessGameProvider = ({
 				allowDragging,
 				boardId,
 				boardOrientation: boardOrientation === "black" ? "black" : "white",
+				lastMoveSquares,
 				onPieceDrop,
 				position,
 			}}
