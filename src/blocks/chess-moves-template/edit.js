@@ -38,7 +38,7 @@ const TEMPLATE = [
 			[
 				"core/column",
 				{
-					width: "20%",
+					width: "16%",
 					style: {
 						spacing: {
 							padding: {
@@ -56,14 +56,14 @@ const TEMPLATE = [
 			[
 				"core/column",
 				{
-					width: "40%",
+					width: "42%",
 				},
 				[["gutenberg-chess/chess-move"]],
 			],
 			[
 				"core/column",
 				{
-					width: "40%",
+					width: "42%",
 				},
 				[
 					[

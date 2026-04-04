@@ -55,7 +55,7 @@ const TEMPLATE = [
 									blockGap: "0",
 								},
 							},
-							fontSize: "medium",
+							fontSize: "small",
 							layout: {
 								type: "constrained",
 							},
