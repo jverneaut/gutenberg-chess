@@ -10,7 +10,7 @@
 		"GutenbergChess",
 		"gutenberg-chess.php",
 		"gutenberg-chess-class.php",
-		"readme.md"
+		"README.md"
 	],
 	"main": "build/index.js",
 	"scripts": {
