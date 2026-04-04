@@ -4,9 +4,7 @@ import { __ } from "@wordpress/i18n";
 import { useEffect } from "react";
 
 const getPlayerId = (attributes, context) =>
-	Number(
-		context?.["gutenberg-chess/playerId"] || attributes.playerId || 0,
-	);
+	Number(context?.["gutenberg-chess/playerId"] || attributes.playerId || 0);
 
 const Edit = ({ attributes, context, setAttributes }) => {
 	const blockProps = useBlockProps();

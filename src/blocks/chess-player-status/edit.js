@@ -2,7 +2,10 @@ import { useBlockProps } from "@wordpress/block-editor";
 import { useSelect } from "@wordpress/data";
 import { useEffect } from "react";
 
-import { getEffectivePlayerSide, isBlackEditorPerspective } from "../../components/editor-perspective";
+import {
+	getEffectivePlayerSide,
+	isBlackEditorPerspective,
+} from "../../components/editor-perspective";
 import { getPlayerStatusText } from "../../components/player-status";
 
 const Edit = ({ attributes, context, setAttributes }) => {

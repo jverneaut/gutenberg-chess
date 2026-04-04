@@ -26,7 +26,8 @@ const Edit = ({ attributes, setAttributes, context }) => {
 			: context["gutenberg-chess/whiteMove"] || "";
 	const lastMove = isLastMove(side, context);
 	const blockProps = useBlockProps({
-		className: `wp-block-gutenberg-chess-chess-move wp-block-gutenberg-chess-chess-move--${side} ${lastMove ? "is-last-move" : ""}`.trim(),
+		className:
+			`wp-block-gutenberg-chess-chess-move wp-block-gutenberg-chess-chess-move--${side} ${lastMove ? "is-last-move" : ""}`.trim(),
 	});
 
 	return (

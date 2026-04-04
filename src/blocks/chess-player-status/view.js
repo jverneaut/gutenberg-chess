@@ -4,7 +4,8 @@ const mountChessPlayerStatuses = () => {
 	const statusNodes = document.querySelectorAll(".js-gc-chess-player-status");
 
 	statusNodes.forEach((statusNode) => {
-		const playerSide = statusNode.dataset.playerSide === "black" ? "black" : "white";
+		const playerSide =
+			statusNode.dataset.playerSide === "black" ? "black" : "white";
 		let moves = [];
 
 		try {

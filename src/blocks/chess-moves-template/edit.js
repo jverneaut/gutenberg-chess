@@ -129,7 +129,10 @@ const Edit = ({ context }) => {
 		(select) => select(blockEditorStore).getBlock(clientId),
 		[clientId],
 	);
-	const blocks = useMemo(() => templateBlock?.innerBlocks || [], [templateBlock]);
+	const blocks = useMemo(
+		() => templateBlock?.innerBlocks || [],
+		[templateBlock],
+	);
 	const moves = context["gutenberg-chess/moves"] || [];
 	const rows = buildMoveRows(moves);
 	const rowsToRender = rows.length ? rows : [EMPTY_ROW];
@@ -142,7 +145,10 @@ const Edit = ({ context }) => {
 
 				if (index === 0) {
 					return (
-						<BlockContextProvider key={`row-${row.moveNumber}`} value={rowContext}>
+						<BlockContextProvider
+							key={`row-${row.moveNumber}`}
+							value={rowContext}
+						>
 							<TemplateInnerBlocks />
 						</BlockContextProvider>
 					);

@@ -3,7 +3,14 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 } from "@wordpress/block-editor";
-import { ComboboxControl, Flex, FlexBlock, FlexItem, PanelBody, Spinner } from "@wordpress/components";
+import {
+	ComboboxControl,
+	Flex,
+	FlexBlock,
+	FlexItem,
+	PanelBody,
+	Spinner,
+} from "@wordpress/components";
 import { useEntityRecords } from "@wordpress/core-data";
 import { __ } from "@wordpress/i18n";
 
@@ -125,7 +132,10 @@ const renderUserOption = ({ item }) => {
 			<FlexItem>{renderAvatar(item)}</FlexItem>
 			<FlexBlock>
 				<div>{item.label}</div>
-				<div className="gc-chess-player-option-meta" style={optionSecondaryTextStyle}>
+				<div
+					className="gc-chess-player-option-meta"
+					style={optionSecondaryTextStyle}
+				>
 					@{item.slug}
 				</div>
 			</FlexBlock>
@@ -147,10 +157,8 @@ const Edit = ({ attributes, setAttributes }) => {
 	const innerBlocksProps = useInnerBlocksProps(blockProps, {
 		template: TEMPLATE,
 	});
-	const {
-		records: userRecords,
-		isResolving: isResolvingUsers,
-	} = useEntityRecords("root", "user", PLAYER_QUERY);
+	const { records: userRecords, isResolving: isResolvingUsers } =
+		useEntityRecords("root", "user", PLAYER_QUERY);
 	const users = Array.isArray(userRecords) ? userRecords : [];
 	const whitePlayerOptions = [
 		...users.map((user) => ({
@@ -172,10 +180,7 @@ const Edit = ({ attributes, setAttributes }) => {
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody
-					title={__("Players", "gutenberg-chess")}
-					initialOpen={true}
-				>
+				<PanelBody title={__("Players", "gutenberg-chess")} initialOpen={true}>
 					{isResolvingUsers ? (
 						<Spinner />
 					) : (
