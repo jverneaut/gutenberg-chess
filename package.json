@@ -4,6 +4,14 @@
 	"description": "Real-time collaborative chess blocks for WordPress.",
 	"author": "Julien Verneaut <jverneaut@gmail.com>",
 	"license": "MIT",
+	"files": [
+		"build",
+		"vendor",
+		"GutenbergChess",
+		"gutenberg-chess.php",
+		"gutenberg-chess-class.php",
+		"readme.md"
+	],
 	"main": "build/index.js",
 	"scripts": {
 		"build": "wp-scripts build --blocks-manifest",
