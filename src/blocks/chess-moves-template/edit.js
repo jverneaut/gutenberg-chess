@@ -15,6 +15,7 @@ const TEMPLATE = [
 	[
 		"core/columns",
 		{
+			isStackedOnMobile: false,
 			style: {
 				spacing: {
 					padding: {

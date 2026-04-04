@@ -32,7 +32,7 @@ const TEMPLATE = [
 			[
 				"core/avatar",
 				{
-					size: 24,
+					size: 32,
 				},
 			],
 			[
@@ -42,6 +42,10 @@ const TEMPLATE = [
 						layout: {
 							selfStretch: "fill",
 							flexSize: null,
+						},
+						typography: {
+							fontStyle: "normal",
+							fontWeight: "700",
 						},
 					},
 				},
