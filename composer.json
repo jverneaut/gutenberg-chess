@@ -14,6 +14,10 @@
 			"email": "jverneaut@gmail.com"
 		}
 	],
+	"scripts": {
+		"format": "pint",
+		"format:check": "pint --test"
+	},
 	"require-dev": {
 		"laravel/pint": "^1.29"
 	}
