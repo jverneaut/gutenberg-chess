@@ -1,6 +1,6 @@
 {
 	"name": "gutenberg-chess",
-	"version": "0.1.5",
+	"version": "0.1.6",
 	"description": "Real-time collaborative chess blocks for WordPress.",
 	"author": "Julien Verneaut <jverneaut@gmail.com>",
 	"license": "MIT",
