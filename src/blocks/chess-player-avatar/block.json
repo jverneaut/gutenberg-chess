@@ -1,0 +1,45 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "gutenberg-chess/chess-player-avatar",
+	"version": "0.1.0",
+	"title": "Chess Player Avatar",
+	"category": "games",
+	"icon": "admin-users",
+	"description": "Displays the selected chess player avatar.",
+	"ancestor": ["gutenberg-chess/chess-player"],
+	"attributes": {
+		"size": {
+			"type": "number",
+			"default": 32
+		}
+	},
+	"usesContext": [
+		"gutenberg-chess/whitePlayerId",
+		"gutenberg-chess/blackPlayerId",
+		"gutenberg-chess/playerSide"
+	],
+	"supports": {
+		"anchor": true,
+		"html": false,
+		"spacing": {
+			"margin": true,
+			"padding": true
+		},
+		"__experimentalBorder": {
+			"radius": true,
+			"color": true,
+			"width": true,
+			"style": true,
+			"__experimentalDefaultControls": {
+				"radius": true,
+				"color": true,
+				"width": true,
+				"style": true
+			}
+		}
+	},
+	"textdomain": "gutenberg-chess",
+	"editorScript": "file:./index.js",
+	"render": "file:./render.php"
+}
