@@ -19,10 +19,7 @@ Chess is a perfect stress test:
 - stateful UI
 - clean block composition
 
-So this plugin turns that into a reusable block system instead of a one-off widget.
-
-This plugin is intentionally composable.
-The board, players, status labels, and move list are separate blocks, so admins can rearrange the layout directly in the editor.
+This plugin turns all of that into a proper, reusable block system. The board, players, status labels, and move list are separate blocks so admins can rearrange the layout directly in the editor.
 
 ## Architecture (Quick Tour)
 
