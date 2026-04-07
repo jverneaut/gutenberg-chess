@@ -1,18 +1,10 @@
 import {
 	BlockControls,
-	useBlockEditContext,
 	useBlockProps,
 	useInnerBlocksProps,
 } from "@wordpress/block-editor";
 import { ToolbarButton, ToolbarGroup } from "@wordpress/components";
-import { useDispatch, useSelect } from "@wordpress/data";
 import { __ } from "@wordpress/i18n";
-import { useEffect, useMemo } from "react";
-
-import {
-	getEffectivePlayerSide,
-	isBlackEditorPerspective,
-} from "../../components/editor-perspective";
 
 const TEMPLATE = [
 	[
@@ -30,7 +22,7 @@ const TEMPLATE = [
 		},
 		[
 			[
-				"core/avatar",
+				"gutenberg-chess/chess-player-avatar",
 				{
 					size: 32,
 				},
@@ -87,78 +79,13 @@ const TEMPLATE = [
 	],
 ];
 
-const getPlayerIdFromContext = (playerSide, context) =>
-	playerSide === "black"
-		? context["gutenberg-chess/blackPlayerId"] || 0
-		: context["gutenberg-chess/whitePlayerId"] || 0;
-
-const getBlocksByName = (block, blockName) => {
-	if (!block) {
-		return [];
-	}
-
-	const currentBlock = block.name === blockName ? [block] : [];
-	const childBlocks = (block.innerBlocks || []).flatMap((innerBlock) =>
-		getBlocksByName(innerBlock, blockName),
-	);
-
-	return [...currentBlock, ...childBlocks];
-};
-
-const Edit = ({ attributes, context, setAttributes }) => {
-	const { clientId } = useBlockEditContext();
-	const { updateBlockAttributes } = useDispatch("core/block-editor");
-	const currentUserId = useSelect(
-		(select) => select("core").getCurrentUser?.()?.id || 0,
-		[],
-	);
-	const whitePlayerId = context["gutenberg-chess/whitePlayerId"] || 0;
-	const blackPlayerId = context["gutenberg-chess/blackPlayerId"] || 0;
-	const isBlackPerspective = isBlackEditorPerspective({
-		currentUserId,
-		whitePlayerId,
-		blackPlayerId,
-	});
+const Edit = ({ attributes, setAttributes }) => {
 	const playerSide = attributes.playerSide || "white";
-	const effectivePlayerSide = getEffectivePlayerSide(
-		playerSide,
-		isBlackPerspective,
-	);
+
 	const blockProps = useBlockProps();
 	const innerBlocksProps = useInnerBlocksProps(blockProps, {
 		template: TEMPLATE,
 	});
-	const rootBlock = useSelect(
-		(select) => select("core/block-editor").getBlock(clientId),
-		[clientId],
-	);
-	const avatarBlocks = useMemo(
-		() =>
-			getBlocksByName(rootBlock, "core/avatar").map((block) => ({
-				clientId: block.clientId,
-				userId: block.attributes.userId || 0,
-			})),
-		[rootBlock],
-	);
-	const playerId = getPlayerIdFromContext(effectivePlayerSide, context);
-
-	useEffect(() => {
-		if (attributes.playerId === playerId) {
-			return;
-		}
-
-		setAttributes({ playerId });
-	}, [attributes.playerId, playerId, setAttributes]);
-
-	useEffect(() => {
-		avatarBlocks.forEach((avatarBlock) => {
-			if (avatarBlock.userId === playerId) {
-				return;
-			}
-
-			updateBlockAttributes(avatarBlock.clientId, { userId: playerId });
-		});
-	}, [avatarBlocks, playerId, updateBlockAttributes]);
 
 	return (
 		<>
