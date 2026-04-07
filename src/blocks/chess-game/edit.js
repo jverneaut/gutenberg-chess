@@ -9,69 +9,15 @@ import {
 	FlexBlock,
 	FlexItem,
 	PanelBody,
+	Placeholder,
 	Spinner,
 } from "@wordpress/components";
 import { useEntityRecords } from "@wordpress/core-data";
+import { useEffect, useMemo } from "@wordpress/element";
 import { __ } from "@wordpress/i18n";
 
 import ChessGameProvider from "../../contexts/ChessGameContext";
-
-const TEMPLATE = [
-	[
-		"core/columns",
-		{},
-		[
-			[
-				"core/column",
-				{
-					width: "66.66%",
-				},
-				[
-					[
-						"gutenberg-chess/chess-player",
-						{
-							playerSide: "black",
-						},
-					],
-					["gutenberg-chess/chess-board"],
-					[
-						"gutenberg-chess/chess-player",
-						{
-							playerSide: "white",
-						},
-					],
-				],
-			],
-			[
-				"core/column",
-				{
-					width: "33.33%",
-				},
-				[
-					[
-						"core/group",
-						{
-							style: {
-								spacing: {
-									padding: {
-										top: "var:preset|spacing|50",
-										bottom: "var:preset|spacing|50",
-									},
-									blockGap: "0",
-								},
-							},
-							fontSize: "small",
-							layout: {
-								type: "constrained",
-							},
-						},
-						[["gutenberg-chess/chess-moves"]],
-					],
-				],
-			],
-		],
-	],
-];
+import { getGameResultFromMoves } from "../../utils/player-status";
 const PLAYER_QUERY = {
 	who: "authors",
 	per_page: 100,
@@ -185,57 +131,116 @@ const PlayerComboboxControl = ({
 	/>
 );
 
+const PlayerSelectionControls = ({
+	attributes,
+	isResolvingUsers,
+	playerOptions,
+	setAttributes,
+	users,
+}) => {
+	if (isResolvingUsers) {
+		return <Spinner />;
+	}
+
+	return (
+		<>
+			<PlayerComboboxControl
+				label={__("White player", "gutenberg-chess")}
+				options={playerOptions}
+				users={users}
+				selectedPlayerId={attributes.whitePlayerId}
+				onPlayerSelect={(selectedUserId) =>
+					setAttributes({
+						whitePlayerId: selectedUserId,
+					})
+				}
+			/>
+			<div style={{ height: "12px" }} />
+			<PlayerComboboxControl
+				label={__("Black player", "gutenberg-chess")}
+				options={playerOptions}
+				users={users}
+				selectedPlayerId={attributes.blackPlayerId}
+				onPlayerSelect={(selectedUserId) =>
+					setAttributes({
+						blackPlayerId: selectedUserId,
+					})
+				}
+			/>
+		</>
+	);
+};
+
 const Edit = ({ attributes, setAttributes }) => {
+	const moves = useMemo(
+		() => (Array.isArray(attributes.moves) ? attributes.moves : []),
+		[attributes.moves],
+	);
+	const computedGameResult = useMemo(
+		() => getGameResultFromMoves(moves),
+		[moves],
+	);
 	const blockProps = useBlockProps();
-	const innerBlocksProps = useInnerBlocksProps(blockProps, {
-		template: TEMPLATE,
-	});
+	const innerBlocksProps = useInnerBlocksProps(blockProps);
 	const { records: userRecords, isResolving: isResolvingUsers } =
 		useEntityRecords("root", "user", PLAYER_QUERY);
 	const users = Array.isArray(userRecords) ? userRecords : [];
 	const playerOptions = mapUsersToPlayerOptions(users);
+	const needsPlayerSelection =
+		!attributes.whitePlayerId || !attributes.blackPlayerId;
+	useEffect(() => {
+		const currentGameResult =
+			typeof attributes.gameResult === "string" ? attributes.gameResult : "";
+
+		if (currentGameResult === computedGameResult) {
+			return;
+		}
+
+		setAttributes({
+			gameResult: computedGameResult,
+		});
+	}, [attributes.gameResult, computedGameResult, setAttributes]);
 
 	return (
 		<>
 			<InspectorControls>
 				<PanelBody title={__("Players", "gutenberg-chess")} initialOpen={true}>
-					{isResolvingUsers ? (
-						<Spinner />
-					) : (
-						<>
-							<PlayerComboboxControl
-								label={__("White player", "gutenberg-chess")}
-								options={playerOptions}
-								users={users}
-								selectedPlayerId={attributes.whitePlayerId}
-								onPlayerSelect={(selectedUserId) =>
-									setAttributes({
-										whitePlayerId: selectedUserId,
-									})
-								}
-							/>
-							<div style={{ height: "12px" }} />
-							<PlayerComboboxControl
-								label={__("Black player", "gutenberg-chess")}
-								options={playerOptions}
-								users={users}
-								selectedPlayerId={attributes.blackPlayerId}
-								onPlayerSelect={(selectedUserId) =>
-									setAttributes({
-										blackPlayerId: selectedUserId,
-									})
-								}
-							/>
-						</>
-					)}
+					<PlayerSelectionControls
+						attributes={attributes}
+						isResolvingUsers={isResolvingUsers}
+						playerOptions={playerOptions}
+						setAttributes={setAttributes}
+						users={users}
+					/>
 				</PanelBody>
 			</InspectorControls>
 			<ChessGameProvider
-				moves={attributes.moves}
-				onMovesChange={(moves) => setAttributes({ moves })}
+				moves={moves}
+				onMovesChange={(nextMoves) => setAttributes({ moves: nextMoves })}
 				allowDragging
 			>
-				<div {...innerBlocksProps} />
+				{needsPlayerSelection ? (
+					<div {...blockProps}>
+						<Placeholder
+							icon="games"
+							label={__("Set up game", "gutenberg-chess")}
+							instructions={__(
+								"Choose both players to start this chess game.",
+								"gutenberg-chess",
+							)}
+						>
+							<PlayerSelectionControls
+								attributes={attributes}
+								isResolvingUsers={isResolvingUsers}
+								playerOptions={playerOptions}
+								setAttributes={setAttributes}
+								users={users}
+							/>
+						</Placeholder>
+					</div>
+				) : (
+					<div {...innerBlocksProps} />
+				)}
 			</ChessGameProvider>
 		</>
 	);
