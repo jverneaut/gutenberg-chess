@@ -12,15 +12,15 @@ import ChessBoard from "../../components/ChessBoard";
 import {
 	canCurrentUserPlayTurn,
 	isBlackEditorPerspective,
-} from "../../components/editor-perspective";
+} from "../../utils/editor-perspective";
+import { useCurrentUserId } from "../../hooks/useCurrentUserId";
+import { useMovesFromContext } from "../../hooks/useMovesFromContext";
+import { usePlayerIdsFromContext } from "../../hooks/usePlayerIdsFromContext";
 
 const Edit = ({ context }) => {
 	const { clientId } = useBlockEditContext();
 	const { updateBlockAttributes } = useDispatch("core/block-editor");
-	const currentUserId = useSelect(
-		(select) => select("core").getCurrentUser?.()?.id || 0,
-		[],
-	);
+	const currentUserId = useCurrentUserId();
 	const parentClientId = useSelect(
 		(select) =>
 			select("core/block-editor").getBlockParentsByBlockName(clientId, [
@@ -28,9 +28,8 @@ const Edit = ({ context }) => {
 			])[0],
 		[clientId],
 	);
-	const whitePlayerId = context["gutenberg-chess/whitePlayerId"] || 0;
-	const blackPlayerId = context["gutenberg-chess/blackPlayerId"] || 0;
-	const moves = context["gutenberg-chess/moves"] || [];
+	const { whitePlayerId, blackPlayerId } = usePlayerIdsFromContext(context);
+	const moves = useMovesFromContext(context);
 	const boardOrientation = isBlackEditorPerspective({
 		currentUserId,
 		whitePlayerId,

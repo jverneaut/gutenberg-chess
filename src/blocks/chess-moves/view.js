@@ -1,4 +1,4 @@
-import { buildMoveRows } from "../../components/move-rows";
+import { buildMoveRows } from "../../utils/move-rows";
 
 const EMPTY_ROW = {
 	moveNumber: 1,

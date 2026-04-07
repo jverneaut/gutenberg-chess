@@ -1,33 +1,16 @@
 import { useBlockProps } from "@wordpress/block-editor";
-import { useSelect } from "@wordpress/data";
 import { useEffect } from "react";
 
-import {
-	getEffectivePlayerSide,
-	isBlackEditorPerspective,
-} from "../../components/editor-perspective";
-import { getPlayerStatusText } from "../../components/player-status";
+import { useMovesFromContext } from "../../hooks/useMovesFromContext";
+import { useResolvedPlayer } from "../../hooks/useResolvedPlayer";
+import { getPlayerStatusText } from "../../utils/player-status";
 
 const Edit = ({ attributes, context, setAttributes }) => {
-	const basePlayerSide =
-		(context["gutenberg-chess/playerSide"] ?? attributes.playerSide) === "black"
-			? "black"
-			: "white";
-	const currentUserId = useSelect(
-		(select) => select("core").getCurrentUser?.()?.id || 0,
-		[],
-	);
-	const whitePlayerId = context["gutenberg-chess/whitePlayerId"] || 0;
-	const blackPlayerId = context["gutenberg-chess/blackPlayerId"] || 0;
-	const playerSide = getEffectivePlayerSide(
-		basePlayerSide,
-		isBlackEditorPerspective({
-			currentUserId,
-			whitePlayerId,
-			blackPlayerId,
-		}),
-	);
-	const moves = context["gutenberg-chess/moves"] || [];
+	const { playerSide } = useResolvedPlayer({
+		context,
+		attributePlayerSide: attributes.playerSide,
+	});
+	const moves = useMovesFromContext(context);
 	const statusText = getPlayerStatusText(moves, playerSide);
 	const blockProps = useBlockProps();
 

@@ -1,4 +1,4 @@
-import { getPlayerStatusText } from "../../components/player-status";
+import { getPlayerStatusText } from "../../utils/player-status";
 
 const mountChessPlayerStatuses = () => {
 	const statusNodes = document.querySelectorAll(".js-gc-chess-player-status");

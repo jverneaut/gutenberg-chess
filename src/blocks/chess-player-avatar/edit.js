@@ -1,12 +1,9 @@
 import { InspectorControls, useBlockProps } from "@wordpress/block-editor";
 import { PanelBody, RangeControl } from "@wordpress/components";
-import { useSelect } from "@wordpress/data";
 import { __ } from "@wordpress/i18n";
 
-import {
-	getEffectivePlayerSide,
-	isBlackEditorPerspective,
-} from "../../components/editor-perspective";
+import { usePlayerById } from "../../hooks/usePlayerById";
+import { useResolvedPlayer } from "../../hooks/useResolvedPlayer";
 
 const MIN_SIZE = 16;
 const MAX_SIZE = 256;
@@ -39,44 +36,11 @@ const Edit = ({ attributes, context, setAttributes }) => {
 	const blockProps = useBlockProps({
 		className: "wp-block-avatar",
 	});
-	const basePlayerSide =
-		(context["gutenberg-chess/playerSide"] ?? attributes.playerSide) === "black"
-			? "black"
-			: "white";
-	const currentUserId = useSelect(
-		(select) => select("core").getCurrentUser?.()?.id || 0,
-		[],
-	);
-
-	const whitePlayerId = context["gutenberg-chess/whitePlayerId"] || 0;
-	const blackPlayerId = context["gutenberg-chess/blackPlayerId"] || 0;
-	const playerSide = getEffectivePlayerSide(
-		basePlayerSide,
-		isBlackEditorPerspective({
-			currentUserId,
-			whitePlayerId,
-			blackPlayerId,
-		}),
-	);
-
-	const playerId = playerSide === "white" ? whitePlayerId : blackPlayerId;
-
-	const player = useSelect(
-		(select) => {
-			if (!playerId) {
-				return null;
-			}
-
-			const users = select("core").getUsers({
-				include: [playerId],
-				per_page: 1,
-				_fields: "id,name,avatar_urls",
-			});
-
-			return Array.isArray(users) ? users[0] || null : null;
-		},
-		[playerId],
-	);
+	const { playerId } = useResolvedPlayer({
+		context,
+		attributePlayerSide: attributes.playerSide,
+	});
+	const player = usePlayerById(playerId, "id,name,avatar_urls");
 	const avatarUrl = getAvatarUrl(player?.avatar_urls, size);
 	const fallbackLabel = player?.name
 		? player.name.slice(0, 1).toUpperCase()

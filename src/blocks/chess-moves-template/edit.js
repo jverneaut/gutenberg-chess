@@ -9,7 +9,8 @@ import {
 } from "@wordpress/block-editor";
 import { store as blockEditorStore } from "@wordpress/block-editor";
 
-import { buildMoveRows } from "../../components/move-rows";
+import { useMovesFromContext } from "../../hooks/useMovesFromContext";
+import { buildMoveRows } from "../../utils/move-rows";
 
 const TEMPLATE = [
 	[
@@ -134,7 +135,7 @@ const Edit = ({ context }) => {
 		() => templateBlock?.innerBlocks || [],
 		[templateBlock],
 	);
-	const moves = context["gutenberg-chess/moves"] || [];
+	const moves = useMovesFromContext(context);
 	const rows = buildMoveRows(moves);
 	const rowsToRender = rows.length ? rows : [EMPTY_ROW];
 

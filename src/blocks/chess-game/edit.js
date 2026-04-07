@@ -151,6 +151,39 @@ const getUserIdFromOptionValue = (value, users) => {
 
 	return user?.id || null;
 };
+const mapUsersToPlayerOptions = (users) =>
+	users.map((user) => ({
+		value: String(user.id),
+		label: user.name || user.slug,
+		slug: user.slug,
+		avatar_urls: user.avatar_urls,
+	}));
+
+const PlayerComboboxControl = ({
+	label,
+	selectedPlayerId,
+	options,
+	users,
+	onPlayerSelect,
+}) => (
+	<ComboboxControl
+		__next40pxDefaultSize
+		className="gc-chess-player-combobox"
+		label={label}
+		options={options}
+		value={selectedPlayerId ? String(selectedPlayerId) : ""}
+		onChange={(value) => {
+			const selectedUserId = getUserIdFromOptionValue(value, users);
+
+			if (!selectedUserId) {
+				return;
+			}
+
+			onPlayerSelect(selectedUserId);
+		}}
+		__experimentalRenderItem={renderUserOption}
+	/>
+);
 
 const Edit = ({ attributes, setAttributes }) => {
 	const blockProps = useBlockProps();
@@ -160,22 +193,7 @@ const Edit = ({ attributes, setAttributes }) => {
 	const { records: userRecords, isResolving: isResolvingUsers } =
 		useEntityRecords("root", "user", PLAYER_QUERY);
 	const users = Array.isArray(userRecords) ? userRecords : [];
-	const whitePlayerOptions = [
-		...users.map((user) => ({
-			value: String(user.id),
-			label: user.name || user.slug,
-			slug: user.slug,
-			avatar_urls: user.avatar_urls,
-		})),
-	];
-	const blackPlayerOptions = [
-		...users.map((user) => ({
-			value: String(user.id),
-			label: user.name || user.slug,
-			slug: user.slug,
-			avatar_urls: user.avatar_urls,
-		})),
-	];
+	const playerOptions = mapUsersToPlayerOptions(users);
 
 	return (
 		<>
@@ -185,52 +203,28 @@ const Edit = ({ attributes, setAttributes }) => {
 						<Spinner />
 					) : (
 						<>
-							<ComboboxControl
-								__next40pxDefaultSize
-								className="gc-chess-player-combobox"
+							<PlayerComboboxControl
 								label={__("White player", "gutenberg-chess")}
-								options={whitePlayerOptions}
-								value={
-									attributes.whitePlayerId
-										? String(attributes.whitePlayerId)
-										: ""
-								}
-								onChange={(value) => {
-									const selectedUserId = getUserIdFromOptionValue(value, users);
-
-									if (!selectedUserId) {
-										return;
-									}
-
+								options={playerOptions}
+								users={users}
+								selectedPlayerId={attributes.whitePlayerId}
+								onPlayerSelect={(selectedUserId) =>
 									setAttributes({
 										whitePlayerId: selectedUserId,
-									});
-								}}
-								__experimentalRenderItem={renderUserOption}
+									})
+								}
 							/>
 							<div style={{ height: "12px" }} />
-							<ComboboxControl
-								__next40pxDefaultSize
-								className="gc-chess-player-combobox"
+							<PlayerComboboxControl
 								label={__("Black player", "gutenberg-chess")}
-								options={blackPlayerOptions}
-								value={
-									attributes.blackPlayerId
-										? String(attributes.blackPlayerId)
-										: ""
-								}
-								onChange={(value) => {
-									const selectedUserId = getUserIdFromOptionValue(value, users);
-
-									if (!selectedUserId) {
-										return;
-									}
-
+								options={playerOptions}
+								users={users}
+								selectedPlayerId={attributes.blackPlayerId}
+								onPlayerSelect={(selectedUserId) =>
 									setAttributes({
 										blackPlayerId: selectedUserId,
-									});
-								}}
-								__experimentalRenderItem={renderUserOption}
+									})
+								}
 							/>
 						</>
 					)}
