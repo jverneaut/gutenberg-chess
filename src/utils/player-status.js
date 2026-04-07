@@ -35,9 +35,7 @@ export const getGameResultFromMoves = (moves = []) => {
 	const chess = applyMoves(moves);
 
 	if (chess.isCheckmate()) {
-		return chess.turn() === "w"
-			? GAME_RESULT.BLACK_WON
-			: GAME_RESULT.WHITE_WON;
+		return chess.turn() === "w" ? GAME_RESULT.BLACK_WON : GAME_RESULT.WHITE_WON;
 	}
 
 	if (chess.isDraw()) {
