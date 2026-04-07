@@ -28,7 +28,7 @@ The board, players, status labels, and move list are separate blocks, so admins 
 
 At a high level:
 
-- `chess-game` is the state owner (moves + selected players).
+- `chess-game` is the state owner (`moves`, `gameResult`, selected players).
 - state is propagated through Gutenberg block context.
 - specialized child blocks render board, players, status, and move history.
 - React (`chess.js` + `react-chessboard`) handles game rules and board UI.
@@ -48,6 +48,7 @@ Main folders:
 - top-level wrapper and source of truth.
 - stores:
   - `moves`
+  - `gameResult` (`''`, `white_won`, `black_won`, `draw`)
   - `whitePlayerId`
   - `blackPlayerId`
 - provides block context to descendants.
@@ -74,6 +75,7 @@ Main folders:
 ### `gutenberg-chess/chess-player-status`
 
 - displays simple status text like whose turn it is, win state, or draw.
+- consumes `gameResult` from context for a canonical finished-state value.
 - hidden when no status should be shown.
 
 ### `gutenberg-chess/chess-moves`
@@ -97,6 +99,9 @@ Main folders:
 ## Collaboration Behavior
 
 - moves are persisted in block attributes.
+- `gameResult` is derived from `moves` with `chess.js` and persisted on `chess-game`.
+- `gameResult` updates are conditional (only when changed), which prevents redundant
+  cross-client writes and helps avoid websocket ping-pong loops.
 - in editor, only the player whose turn it is can move.
 - if current user is the black player, editor board/player perspective flips.
 - if white and black are the same user, no flip is applied.
