@@ -8,18 +8,9 @@
 	"icon": "info-outline",
 	"description": "Displays a simple game status text.",
 	"ancestor": ["gutenberg-chess/chess-player"],
-	"attributes": {
-		"playerSide": {
-			"type": "string",
-			"default": "white"
-		},
-		"statusText": {
-			"type": "string",
-			"default": ""
-		}
-	},
 	"usesContext": [
 		"gutenberg-chess/moves",
+		"gutenberg-chess/gameResult",
 		"gutenberg-chess/playerSide",
 		"gutenberg-chess/whitePlayerId",
 		"gutenberg-chess/blackPlayerId"
