@@ -10,7 +10,8 @@ const Edit = ({ attributes, context }) => {
 		attributePlayerSide: attributes.playerSide,
 	});
 	const moves = useMovesFromContext(context);
-	const statusText = getPlayerStatusText(moves, playerSide);
+	const gameResult = context["gutenberg-chess/gameResult"] || "";
+	const statusText = getPlayerStatusText(moves, playerSide, gameResult);
 	const blockProps = useBlockProps();
 
 	if (!statusText) {

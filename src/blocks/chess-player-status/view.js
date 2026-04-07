@@ -6,13 +6,14 @@ const mountChessPlayerStatuses = () => {
 	statusNodes.forEach((statusNode) => {
 		const playerSide =
 			statusNode.dataset.playerSide === "black" ? "black" : "white";
+		const gameResult = statusNode.dataset.gameResult || "";
 		let moves = [];
 
 		try {
 			moves = JSON.parse(statusNode.dataset.moves || "[]");
 		} catch {}
 
-		const statusText = getPlayerStatusText(moves, playerSide);
+		const statusText = getPlayerStatusText(moves, playerSide, gameResult);
 
 		statusNode.textContent = statusText;
 		statusNode.hidden = !statusText;

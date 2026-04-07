@@ -1,21 +1,8 @@
 <?php
 
-$playerSide = ($block->context['gutenberg-chess/playerSide'] ?? $attributes['playerSide'] ?? 'white') === 'black'
-    ? 'black'
-    : 'white';
-$whitePlayerId = absint($block->context['gutenberg-chess/whitePlayerId'] ?? 0);
-$blackPlayerId = absint($block->context['gutenberg-chess/blackPlayerId'] ?? 0);
-$playerId = $playerSide === 'white' ? $whitePlayerId : $blackPlayerId;
-$fallbackName = $attributes['playerName'] ?? '';
-$playerName = $fallbackName;
+use GutenbergChess\ChessGameState;
 
-if ($playerId) {
-    $user = get_userdata($playerId);
-
-    if ($user && isset($user->display_name)) {
-        $playerName = (string) $user->display_name;
-    }
-}
+$playerName = ChessGameState::playerNameFromSource($attributes, $block);
 
 $wrapperAttributes = get_block_wrapper_attributes();
 ?>

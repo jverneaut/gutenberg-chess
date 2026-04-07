@@ -13,6 +13,10 @@
 			"type": "array",
 			"default": []
 		},
+		"gameResult": {
+			"type": "string",
+			"default": ""
+		},
 		"whitePlayerId": {
 			"type": "number",
 			"default": 0
@@ -24,6 +28,7 @@
 	},
 	"providesContext": {
 		"gutenberg-chess/moves": "moves",
+		"gutenberg-chess/gameResult": "gameResult",
 		"gutenberg-chess/whitePlayerId": "whitePlayerId",
 		"gutenberg-chess/blackPlayerId": "blackPlayerId"
 	},

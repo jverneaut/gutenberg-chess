@@ -12,73 +12,6 @@ import { store as blockEditorStore } from "@wordpress/block-editor";
 import { useMovesFromContext } from "../../hooks/useMovesFromContext";
 import { buildMoveRows } from "../../utils/move-rows";
 
-const TEMPLATE = [
-	[
-		"core/columns",
-		{
-			isStackedOnMobile: false,
-			style: {
-				spacing: {
-					padding: {
-						top: "2px",
-						bottom: "2px",
-						left: "0",
-						right: "0",
-					},
-					blockGap: {
-						top: "0",
-						left: "var:preset|spacing|20",
-					},
-					margin: {
-						top: "0",
-						bottom: "0",
-					},
-				},
-			},
-		},
-		[
-			[
-				"core/column",
-				{
-					width: "16%",
-					style: {
-						spacing: {
-							padding: {
-								top: "0",
-								bottom: "0",
-							},
-						},
-					},
-					layout: {
-						type: "default",
-					},
-				},
-				[["gutenberg-chess/chess-move-index"]],
-			],
-			[
-				"core/column",
-				{
-					width: "42%",
-				},
-				[["gutenberg-chess/chess-move"]],
-			],
-			[
-				"core/column",
-				{
-					width: "42%",
-				},
-				[
-					[
-						"gutenberg-chess/chess-move",
-						{
-							side: "black",
-						},
-					],
-				],
-			],
-		],
-	],
-];
 const EMPTY_ROW = {
 	moveNumber: 1,
 	whiteMove: "",
@@ -98,7 +31,6 @@ const TemplateInnerBlocks = () => {
 	const innerBlocksProps = useInnerBlocksProps(
 		{ className: "gc-chess-moves-row" },
 		{
-			template: TEMPLATE,
 			templateLock: false,
 			__unstableDisableLayoutClassNames: true,
 		},
