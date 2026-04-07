@@ -8,17 +8,11 @@
 	"icon": "admin-users",
 	"description": "Displays the selected chess player name.",
 	"ancestor": ["gutenberg-chess/chess-player"],
-	"attributes": {
-		"playerId": {
-			"type": "number",
-			"default": 0
-		},
-		"playerName": {
-			"type": "string",
-			"default": ""
-		}
-	},
-	"usesContext": ["gutenberg-chess/playerId"],
+	"usesContext": [
+		"gutenberg-chess/whitePlayerId",
+		"gutenberg-chess/blackPlayerId",
+		"gutenberg-chess/playerSide"
+	],
 	"supports": {
 		"anchor": true,
 		"html": false,
@@ -64,5 +58,6 @@
 		}
 	},
 	"textdomain": "gutenberg-chess",
-	"editorScript": "file:./index.js"
+	"editorScript": "file:./index.js",
+	"render": "file:./render.php"
 }

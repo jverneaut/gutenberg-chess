@@ -1,14 +1,36 @@
 import { useBlockProps } from "@wordpress/block-editor";
 import { useSelect } from "@wordpress/data";
 import { __ } from "@wordpress/i18n";
-import { useEffect } from "react";
 
-const getPlayerId = (attributes, context) =>
-	Number(context?.["gutenberg-chess/playerId"] || attributes.playerId || 0);
+import {
+	getEffectivePlayerSide,
+	isBlackEditorPerspective,
+} from "../../components/editor-perspective";
 
-const Edit = ({ attributes, context, setAttributes }) => {
+const Edit = ({ attributes, context }) => {
 	const blockProps = useBlockProps();
-	const playerId = getPlayerId(attributes, context);
+	const basePlayerSide =
+		(context["gutenberg-chess/playerSide"] ?? attributes.playerSide) === "black"
+			? "black"
+			: "white";
+	const currentUserId = useSelect(
+		(select) => select("core").getCurrentUser?.()?.id || 0,
+		[],
+	);
+
+	const whitePlayerId = context["gutenberg-chess/whitePlayerId"] || 0;
+	const blackPlayerId = context["gutenberg-chess/blackPlayerId"] || 0;
+	const playerSide = getEffectivePlayerSide(
+		basePlayerSide,
+		isBlackEditorPerspective({
+			currentUserId,
+			whitePlayerId,
+			blackPlayerId,
+		}),
+	);
+
+	const playerId = playerSide === "white" ? whitePlayerId : blackPlayerId;
+
 	const player = useSelect(
 		(select) => {
 			if (!playerId) {
@@ -26,30 +48,6 @@ const Edit = ({ attributes, context, setAttributes }) => {
 		[playerId],
 	);
 	const playerName = player?.name || attributes.playerName;
-
-	useEffect(() => {
-		const nextAttributes = {};
-
-		if (attributes.playerId !== playerId) {
-			nextAttributes.playerId = playerId;
-		}
-
-		if (player?.name && attributes.playerName !== player.name) {
-			nextAttributes.playerName = player.name;
-		}
-
-		if (!Object.keys(nextAttributes).length) {
-			return;
-		}
-
-		setAttributes(nextAttributes);
-	}, [
-		attributes.playerId,
-		attributes.playerName,
-		playerId,
-		player?.name,
-		setAttributes,
-	]);
 
 	return (
 		<div {...blockProps}>
